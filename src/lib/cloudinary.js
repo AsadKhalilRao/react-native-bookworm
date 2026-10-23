@@ -1,5 +1,5 @@
-import { v2 as cloudinary } from "cloudinary";
 import "dotenv/config";
+import { v2 as cloudinary } from "cloudinary";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -7,4 +7,13 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-export default cloudinary;
+const tiny =
+  "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==";
+
+try {
+  console.log("ping:", await cloudinary.api.ping());
+  const r = await cloudinary.uploader.upload(tiny);
+  console.log("UPLOAD OK:", r.secure_url);
+} catch (e) {
+  console.log("FAILED:", e);
+}
